@@ -1,11 +1,11 @@
 {
-  "name": "test-app",
+  "name": "user-auth-app",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "build": "rimraf dist/ && babel --out-dir dist/ --source-maps --copy-files ./app --ignore ./node_modules",
-    "start:dev": "nodemon ./app/bin/www --exec babel-node",
-    "start": "npm run build && node ./dist/bin/www DEBUG=*"
+    "start": "cross-env DEBUG=user-auth-app:* nodemon ./app/bin/www --exec babel-node",
+    "start:prod": "npm run build && node ./dist/bin/www DEBUG=*"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
@@ -13,7 +13,19 @@
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
-    "morgan": "~1.9.0"
+    "morgan": "~1.9.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "concurrently": "^4.1.0",
+    "cors": "^2.8.5",
+    "cross-env": "^5.2.0",
+    "dotenv": "^6.1.0",
+    "is-empty": "^1.2.0",
+    "jsonwebtoken": "^8.4.0",
+    "mongoose": "^5.3.16",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "validator": "^10.9.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

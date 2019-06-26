@@ -1,9 +1,18 @@
 import express from 'express';
-var router = express.Router();
+import cors from 'cors';
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+const router = express.Router();
+router.all('*', cors());
+
+// @route GET api/users/currentuser
+// @desc Return current user
+// @access Private
+router.get("/currentuser", (req, res, next) => {
+  res.json({
+    id: req.user.id,
+    name: req.user.name,
+    email: req.user.email
+  });
 });
 
 export default router;
