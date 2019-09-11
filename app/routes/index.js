@@ -11,7 +11,13 @@ import { validateLoginInput } from '../validation/login';
 import User from '../models/User';
 
 const router = express.Router();
-router.all('*', cors());
+router.all('*', cors()); 
+
+
+/* GET home page. */
+router.get('/', function(req, res, next) {
+  res.render('index', { title: 'Express' });
+});
 
 // @route POST api/users/register
 // @desc Register user
@@ -81,7 +87,8 @@ router.post("/login", (req, res) => {
         // Create JWT Payload
         const payload = {
           id: user.id,
-          name: user.name
+          name: user.name,
+          email: user.email
         };
 
         // Sign token

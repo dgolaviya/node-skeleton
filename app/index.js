@@ -41,6 +41,7 @@ passportConfig(passport);
 // Routes
 app.use('/', indexRouter);
 app.use("/api/users", passport.authenticate('jwt', {session: false}), usersRouter);
+// app.use("/api/products", passport.authenticate('jwt', {session: false}), usersRouter);
 // app.use("/messages", messages);
 
 // catch 404 and forward to error handler
