@@ -46,7 +46,8 @@ const spec = fs.readFileSync(path.join(__dirname, './swagger.yaml'), 'utf8');
 const swaggerDocument = jsyaml.safeLoad(spec);
 
 // Routes
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api', indexRouter);
 app.use("/api/users", passport.authenticate('jwt', {session: false}), usersRouter);
 
 // handles not found errors
