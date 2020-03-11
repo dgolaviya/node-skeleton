@@ -1,0 +1,201 @@
+swagger: "2.0"
+info:
+  description: "This is a node skeleton"
+  version: "1.0.0"
+  title: "Node Test API"
+  contact:
+    email: "divyang61190@gmail.com"
+basePath: "/api"
+tags:
+- name: "User API"
+  description: "Contains user login and registration."
+schemes:
+- "http"
+consumes:
+  - application/json
+produces:
+  - application/json
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT 
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+paths:
+  /login:
+    post:
+      tags:
+      - "Login User"
+      security:
+        - bearerAuth: []
+      summary: "Provide login credentials"
+      parameters:
+      - name: Authorization
+        in: header
+        description: Needs a Bearer token to authenticate
+        required: true
+        type: string
+      - in: "body"
+        name: "payload"
+        description: "login payload"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            email:
+              type: "string"
+            password:
+              type: "string"
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/InsertResponse'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+  /aggregatedConfigurations/form/{formId}:
+    get:
+      tags:
+      - "Aggregated Configurations"
+      summary: "Gets aggregated configurations for given formId."
+      operationId: "getConfiguration"
+      parameters:
+      - name: Authorization
+        in: header
+        description: Needs a Bearer token to authenticate
+        required: true
+        type: string
+      - name: "formId"
+        description: "The id of the form"
+        in: path
+        type: "string"
+        required: true
+      - name: "checkPublished"
+        description: "Returns latest published form if set to true"
+        in: query
+        type: boolean
+        default: false
+      responses:
+        200:
+          description: "Aggregated configuration of the From"
+          schema:
+            type: "object"
+            items:
+              $ref: "#/definitions/Configuration"
+        400:
+          description: "Invalid scenario"
+  
+  /oobConfigurations/{formId}:
+    get:
+      tags:
+      - "OOB Configurations"
+      summary: "Gets the OOB configuration for given formId"
+      parameters:
+      - name: Authorization
+        in: header
+        description: Needs a Bearer token to authenticate
+        required: true
+        type: string
+      - name: "formId"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OOB configuration of the From"
+          schema:
+            $ref: "#/definitions/Form"
+    put:   
+      tags:
+      - "OOB Configurations"
+      security:
+        - bearerAuth: []
+      summary: "Updates the OOB configuration"
+      parameters:
+      - name: Authorization
+        in: header
+        description: Needs a Bearer token to authenticate
+        required: true
+        type: string
+      - name: "formId"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "form"
+        description: "Form object"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            formDefinition:
+              type: "object"
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/UpdateResponse'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+    delete:
+      tags:
+      - "OOB Configurations"
+      security:
+        - bearerAuth: []
+      summary: "Deletes the OOB configuration"
+      parameters:
+      - name: Authorization
+        in: header
+        description: Needs a Bearer token to authenticate
+        required: true
+        type: string
+      - name: "formId"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/DeleteResponse'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+definitions:
+  DeleteResponse:
+    type: "object"
+    properties:
+      meta:
+        type: "object"
+        properties:
+          serverTimeStamp:
+            type: "string"
+      payload:
+        type: "object"
+        properties:
+          deletedCount:
+            type: "integer"
+            example: 1
+  InsertResponse:
+    type: "object"
+    properties:
+      meta:
+        type: "object"
+        properties:
+          serverTimeStamp:
+            type: "string"
+      payload:
+        type: "object"
+        properties:
+          id:
+            type: "string"
+  UpdateResponse:
+    type: "object"
+    properties:
+      meta:
+        type: "object"
+        properties:
+          serverTimeStamp:
+            type: "string"
+      payload:
+        type: "object"
+        description: "Returns updated records"

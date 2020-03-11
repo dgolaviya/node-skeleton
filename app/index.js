@@ -5,6 +5,9 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import dotenv from 'dotenv';
 import passport from 'passport';
+import swaggerUi from 'swagger-ui-express';
+import jsyaml from 'js-yaml';
+import fs from 'fs';
 
 import connectMongooseDB from './config/mongoose-config';
 import passportConfig from './config/passport';
@@ -38,8 +41,12 @@ app.use(passport.initialize());
 // Passport config
 passportConfig(passport);
 
+//Swagger implementation
+const spec = fs.readFileSync(path.join(__dirname, './swagger.yaml'), 'utf8');
+const swaggerDocument = jsyaml.safeLoad(spec);
+
 // Routes
-app.use('/', indexRouter);
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api/users", passport.authenticate('jwt', {session: false}), usersRouter);
 
 // handles not found errors
