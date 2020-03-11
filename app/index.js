@@ -41,15 +41,36 @@ passportConfig(passport);
 // Routes
 app.use('/', indexRouter);
 app.use("/api/users", passport.authenticate('jwt', {session: false}), usersRouter);
-// app.use("/api/products", passport.authenticate('jwt', {session: false}), usersRouter);
-// app.use("/messages", messages);
+
+// handles not found errors
+app.use((err, req, res, next) => {
+  if (err.statusCode === 404) {
+    res.status(404).json(err);
+  }
+  next(err);
+});
+
+// handles unauthorized errors
+app.use((err, req, res, next) => {
+  if(err.statusCode === 304){
+    res.status(304).render('Unauthorized');
+  }
+  next(err);
+})
+
+// handles unauthorized errors
+app.use((err, req, res, next) => {
+  if(err.statusCode === 400){
+    res.status(400).json(err);
+  }
+  next(err);
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
