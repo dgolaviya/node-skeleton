@@ -53,4 +53,33 @@ const loginUser = async (req, res) => {
   }
 }
 
-export { loginUser };
+const registerUser = async (req, res) => {
+  try {
+    const { errors, isValid } = validateRegisterInput(req.body);
+    if (!isValid) {
+      throw new CustomError(400, 'User input is not valid', errors);
+    }
+    const email = req.body.email;
+    const user = await User.findOne({ email });
+    if (user) {
+      throw new CustomError(400, 'Email already exists');
+    }
+    const newUser = new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password
+    });
+
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(newUser.password, salt);
+    newUser.password = hash;
+    const userData = await newUser.save();
+    res.status(200).json(userData);
+    // console.log(saveUser);
+  }
+  catch (err) {
+    logger(err);
+    res.status(500).send(err);
+  }
+}
+export { loginUser, registerUser };
