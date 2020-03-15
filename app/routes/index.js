@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 
 import { loginUser,registerUser } from '../services/user-service';
+import { createRegantChart,updateRegantChart,createmonthlyChart ,updateDailyProcedureMonthChart,updateWeeklyProcedureMonthChart,updateMonthlyProcedureMonthChart} from '../services/chart-service';
 
 const router = express.Router();
 router.all('*', cors());
@@ -27,4 +28,50 @@ router.post("/register", async (req, res, next) => {
   }
 });
 
+router.post("/createRegantChart", async (req, res, next) => {
+  try {
+    await createRegantChart(req, res);
+  } catch (e) {
+    next(e);
+  }
+});
+router.post("/updateRegantChart", async (req, res, next) => {
+  try {
+    await updateRegantChart(req, res);
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.post("/createMonthChart", async (req, res, next) => {
+  try {
+    await createmonthlyChart(req, res);
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.post("/updateDailyProcedureMonthChart", async (req, res, next) => {
+  try {
+    await updateDailyProcedureMonthChart(req, res);
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.post("/updateWeeklyProcedureMonthChart", async (req, res, next) => {
+  try {
+    await updateWeeklyProcedureMonthChart(req, res);
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.post("/updateMonthlyProcedureMonthChart", async (req, res, next) => {
+  try {
+    await updateMonthlyProcedureMonthChart(req, res);
+  } catch (e) {
+    next(e);
+  }
+});
 export default router;
