@@ -75,6 +75,21 @@ const createRegantChart = async (req, res) => {
             }
     }
 
+    const getRegantChartDetails = async (req, res) => {
+        try{
+            const regantChart = await RegantRefrigerator.findOne({ "name" : req.body.name, "month" : req.body.month, "year" : req.body.year });
+            if (!regantChart) {
+                throw new CustomError(404, 'This month chart does not exists');
+            }
+            else {
+                res.status(200).json(regantChart);
+            }
+        }
+        catch(err){
+            logger(err);
+            res.status(500).send(err);
+            }
+        }
     const createmonthlyChart = async (req, res) => {
         try{
             const { errors, isValid } = validateCreateMonthChartInput(req.body);
@@ -208,4 +223,4 @@ const createRegantChart = async (req, res) => {
                 res.status(500).send(err);
             }
         }
-export { createRegantChart,updateRegantChart,createmonthlyChart,updateDailyProcedureMonthChart,updateWeeklyProcedureMonthChart,updateMonthlyProcedureMonthChart };
+export { createRegantChart,updateRegantChart,getRegantChartDetails,createmonthlyChart,updateDailyProcedureMonthChart,updateWeeklyProcedureMonthChart,updateMonthlyProcedureMonthChart };

@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 
 import { loginUser,registerUser } from '../services/user-service';
-import { createRegantChart,updateRegantChart,createmonthlyChart ,updateDailyProcedureMonthChart,updateWeeklyProcedureMonthChart,updateMonthlyProcedureMonthChart} from '../services/chart-service';
+import { createRegantChart,updateRegantChart,getRegantChartDetails,createmonthlyChart ,updateDailyProcedureMonthChart,updateWeeklyProcedureMonthChart,updateMonthlyProcedureMonthChart} from '../services/chart-service';
 
 const router = express.Router();
 router.all('*', cors());
@@ -31,6 +31,14 @@ router.post("/register", async (req, res, next) => {
 router.post("/createRegantChart", async (req, res, next) => {
   try {
     await createRegantChart(req, res);
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.post("/getRegantChartDetails", async (req, res, next) => {
+  try {
+    await getRegantChartDetails(req, res);
   } catch (e) {
     next(e);
   }
