@@ -48,22 +48,22 @@ const createRegantChart = async (req, res) => {
         }
     }
     const updateRegantChart = async (req, res) => {
-        const chart = await RegantRefrigerator.findOne({ "name" : req.body.name, "month" : req.body.month, "year" : req.body.year, "serialNo" : req.body.serialNo });
-        if (!chart) {
+        const chartDB = await RegantRefrigerator.findOne({ "name" : req.body.name, "month" : req.body.month, "year" : req.body.year, "serialNo" : req.body.serialNo });
+        if (!chartDB) {
             throw new CustomError(404, 'This Chart not exists');
         }
         try{
         const day = req.body.day;
         var dc = { "name" : req.body.name, "month" : req.body.month, "year" : req.body.year , "serialNo" : req.body.serialNo } ;        
-        chart.dataCollection[day].chart = req.body.chart;
-        chart.dataCollection[day].upper = req.body.upper;
-        chart.dataCollection[day].lower = req.body.lower;
-        chart.dataCollection[day].digital = req.body.digital;
-        chart.dataCollection[day].batCheck = req.body.batCheck;
-        chart.dataCollection[day].au = req.body.au;
-        chart.dataCollection[day].userId = req.body.userId;
+        chartDB.dataCollection[day].chart = req.body.chart;
+        chartDB.dataCollection[day].upper = req.body.upper;
+        chartDB.dataCollection[day].lower = req.body.lower;
+        chartDB.dataCollection[day].digital = req.body.digital;
+        chartDB.dataCollection[day].batCheck = req.body.batCheck;
+        chartDB.dataCollection[day].au = req.body.au;
+        chartDB.dataCollection[day].userId = req.body.userId;
         
-        await RegantRefrigerator.findOneAndUpdate(dc, chart, {upsert: true}, function(err, doc) {
+        await RegantRefrigerator.findOneAndUpdate(dc, chartDB, {upsert: true}, function(err, doc) {
             if (err) return res.send(500, err);
             return res.send('Succesfully saved.');
         });
