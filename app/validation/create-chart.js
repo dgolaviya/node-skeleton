@@ -8,8 +8,8 @@ const validateCreateRegantChartInput = (data) => {
     data.name = !isEmpty(data.name) ? data.name : "";
     data.serialNo = !isEmpty(data.serialNo) ? data.serialNo : "";
     data.range = !isEmpty(data.range) ? data.range : "";
-    data.month = !isEmpty(data.month) ? data.month : "";
-    data.year = !isEmpty(data.year) ? data.year : "";
+    //data.month = !isEmpty(data.month) ? data.month : "";
+    //data.year = data.year == null ? data.year : "";
 
     if (Validator.isEmpty(data.name)) {
         errors.name = "Chart Name is required";
@@ -20,10 +20,10 @@ const validateCreateRegantChartInput = (data) => {
     if (Validator.isEmpty(data.range)) {
         errors.range = "Chart Range is required";
     }
-    if (Validator.isEmpty(data.month)) {
+    if (data.month == null) {
         errors.month = "Chart Month is required";
     }
-    if (Validator.isEmpty(data.year)) {
+    if (data.year == null) {
         errors.year = "Chart Year is required";
     } 
 
