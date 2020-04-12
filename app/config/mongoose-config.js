@@ -16,8 +16,7 @@ const DB_OPTIONS = {
   loggerLevel: process.env.DB_LOGGER_LEVEL,
   keepAlive: process.env.DB_KEEP_ALIVE,
   bufferMaxEntries: process.env.DB_BUFFER_MAX_ENTRIES,
-  useNewUrlParser: true,
-  useUnifiedTopology: true
+  useNewUrlParser: true
 }
 
 const connectMongooseDB = () => {
